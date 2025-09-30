@@ -91,7 +91,7 @@ public class RandomWaiter implements Timer {
             Long nextTime = entry.getValue();
 
             if (nextTime != null && currentTime >= nextTime) {
-                startRandomAirdrop(timeSlotId);
+                startRandomAirdrop();
                 calculateNextExecutionForTimeSlot(timeSlotId);
             }
         }
@@ -139,7 +139,7 @@ public class RandomWaiter implements Timer {
         return null;
     }
 
-    private void startRandomAirdrop(NameKey timeSlotId) {
+    private void startRandomAirdrop() {
         WeightedAirDrop selected = randomSelector.getRandomItem();
         if (selected != null) {
             AirDrop airDrop = BAirDropX.getAirdropById(selected.getId());
