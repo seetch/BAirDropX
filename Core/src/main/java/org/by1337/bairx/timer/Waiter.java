@@ -130,7 +130,6 @@ public class Waiter implements Timer {
         AirDrop airDrop = BAirDropX.getAirdropById(airdropId);
         if (airDrop != null && !airDrop.isStarted()) {
             activeAirdrops.put(airdropId, airDrop);
-            airDrop.forceStart(null, null);
         } else if (airDrop == null) {
             BAirDropX.getMessage().warning(BAirDropX.translate("timer.ticker.unknown.airdrop"), name, airdropId);
         }
