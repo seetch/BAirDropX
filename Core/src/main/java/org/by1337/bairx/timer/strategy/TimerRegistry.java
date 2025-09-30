@@ -1,6 +1,7 @@
 package org.by1337.bairx.timer.strategy;
 
 import org.by1337.bairx.timer.Ticker;
+import org.by1337.bairx.timer.Waiter;
 import org.by1337.blib.util.NameKey;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,6 +11,7 @@ import java.util.Map;
 public class TimerRegistry {
     private static final Map<NameKey, TimerRegistry> types = new HashMap<>();
     public static final TimerRegistry TICKER = register(new NameKey("ticker"), Ticker::new);
+    public static final TimerRegistry WAITER = register(new NameKey("waiter"), Waiter::new);
     private final NameKey id;
     private final TimerCreator creator;
 
