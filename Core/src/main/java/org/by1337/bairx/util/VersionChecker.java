@@ -24,6 +24,7 @@ public class VersionChecker implements Listener {
 
     public VersionChecker() {
         currentVersion = BAirDropX.getInstance().getDescription().getVersion();
+        if (!BAirDropX.getInstance().getConfig().getBoolean("check-updates", true)) return;
         new Thread(() -> {
             String result = parsePage();
             if (result != null) {
@@ -32,6 +33,8 @@ public class VersionChecker implements Listener {
                 downloadLink = args[1];
                 if (actualVersion.equals(currentVersion)) return;
                 Bukkit.getPluginManager().registerEvents(VersionChecker.this, BAirDropX.getInstance());
+                BAirDropX.getMessage().log("[BAirDropX] A new version " + actualVersion + " is available here: " + downloadLink);
+                BAirDropX.getMessage().log("[BAirDropX] You are using: " + currentVersion);
                 Bukkit.getOnlinePlayers().forEach(this::trySendUpdateMessage);
             }
         }).start();

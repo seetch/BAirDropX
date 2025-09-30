@@ -463,11 +463,13 @@ public final class BAirDropX extends JavaPlugin {
     }
 
     public static void debug(String s, Object... objects) {
-        debug(() -> String.format(s, objects));
+        if (BAirDropX.getInstance().getConfig().getBoolean("debug", true)) {
+            debug(() -> String.format(s, objects));
+        }
     }
 
     public static void debug(Supplier<String> message) {
-        if (debug) {
+        if (BAirDropX.getInstance().getConfig().getBoolean("debug", true)) {
             getMessage().debug(message.get());
         }
     }

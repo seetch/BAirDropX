@@ -6,7 +6,7 @@
 
     <groupId>org.by1337.bairx</groupId>
     <artifactId>BAirDropX</artifactId>
-    <version>1.0.3-BETA</version>
+    <version>1.0.3.1-BETA</version>
     <packaging>jar</packaging>
 
     <distributionManagement>
@@ -111,8 +111,8 @@
             <url>https://jitpack.io</url>
         </repository>
         <repository>
-            <id>by1337</id>
-            <url>https://by1337.space/repository/maven-releases/</url>
+            <id>by1337-repo</id>
+            <url>https://repo.by1337.space/repository/maven-releases/</url>
         </repository>
         <repository>
             <id>placeholderapi</id>
@@ -123,8 +123,8 @@
     <dependencies>
         <dependency>
             <groupId>org.by1337.blib</groupId>
-            <artifactId>Blib</artifactId>
-            <version>1.0.8.1</version>
+            <artifactId>Blib-api</artifactId>
+            <version>1.7.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -178,7 +178,7 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.3</version>
+            <version>2.11.6</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
