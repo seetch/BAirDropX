@@ -74,16 +74,10 @@ public class RandomWaiter implements Timer {
 
         long currentTime = System.currentTimeMillis();
 
-        Iterator<Map.Entry<NameKey, AirDrop>> activeIterator = activeAirdrops.entrySet().iterator();
-        while (activeIterator.hasNext()) {
-            Map.Entry<NameKey, AirDrop> entry = activeIterator.next();
+        for (Map.Entry<NameKey, AirDrop> entry : activeAirdrops.entrySet()) {
             AirDrop airDrop = entry.getValue();
 
-            if (airDrop.isStarted()) {
-                airDrop.tick();
-            } else {
-                activeIterator.remove();
-            }
+            airDrop.tick();
         }
 
         for (Map.Entry<NameKey, Long> entry : nextExecutionTimes.entrySet()) {
@@ -145,7 +139,6 @@ public class RandomWaiter implements Timer {
             AirDrop airDrop = BAirDropX.getAirdropById(selected.getId());
             if (airDrop != null && !airDrop.isStarted()) {
                 activeAirdrops.put(selected.getId(), airDrop);
-                airDrop.forceStart(null, null);
             } else if (airDrop == null) {
                 BAirDropX.getMessage().warning(BAirDropX.translate("timer.ticker.unknown.airdrop"), name, selected.getId());
             }
