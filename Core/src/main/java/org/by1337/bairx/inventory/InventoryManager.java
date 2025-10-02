@@ -16,12 +16,12 @@ import org.by1337.bairx.inventory.pipeline.ItemHandler;
 import org.by1337.bairx.inventory.pipeline.PipelineHandler;
 import org.by1337.bairx.inventory.pipeline.PipelineManager;
 import org.by1337.bairx.inventory.pipeline.click.ClickHandler;
-import org.by1337.blib.nbt.NBT;
-import org.by1337.blib.nbt.impl.CompoundTag;
-import org.by1337.blib.nbt.impl.ListNBT;
 import org.by1337.bairx.random.WeightedRandomItemSelector;
 import org.by1337.blib.configuration.YamlConfig;
 import org.by1337.blib.configuration.YamlContext;
+import org.by1337.blib.nbt.NBT;
+import org.by1337.blib.nbt.impl.CompoundTag;
+import org.by1337.blib.nbt.impl.ListNBT;
 import org.by1337.blib.util.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -131,9 +131,9 @@ public class InventoryManager implements PipelineHandler<ItemStack>, Listener {
         cfg.set("emptySlotChance", emptySlotChance);
         ListNBT listNBT = new ListNBT();
         for (InventoryItem item : items) {
-            CompoundTag compoundTag1 = new CompoundTag();
-            item.save(compoundTag1);
-            listNBT.add(compoundTag1);
+            CompoundTag tag = new CompoundTag();
+            item.save(tag);
+            listNBT.add(tag);
         }
         compoundTag.putTag("items", listNBT);
     }

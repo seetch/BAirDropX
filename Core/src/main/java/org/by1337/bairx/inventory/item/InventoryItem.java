@@ -1,14 +1,11 @@
 package org.by1337.bairx.inventory.item;
 
 import org.bukkit.inventory.ItemStack;
-import org.by1337.bairx.exception.ConfigurationReadException;
-import org.by1337.blib.BLib;
-import org.by1337.blib.nbt.impl.CompoundTag;
 import org.by1337.bairx.random.WeightedItem;
+import org.by1337.bairx.util.ItemSerializer;
 import org.by1337.bairx.util.Placeholder;
-import org.by1337.bairx.util.Validate;
+import org.by1337.blib.nbt.impl.CompoundTag;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
@@ -32,33 +29,19 @@ public class InventoryItem extends Placeholder implements WeightedItem {
     }
 
     public static InventoryItem load(CompoundTag compoundTag) {
-        int chance = Validate.invokeAndHandleException(() -> compoundTag.getAsInt("chance"),
-                NullPointerException.class,
-                ConfigurationReadException::new,
-                "Не удалось загрузить предмет так как параметр `chance` отсутствует");
-        int minAmount = Validate.invokeAndHandleException(() -> compoundTag.getAsInt("minAmount"),
-                NullPointerException.class,
-                ConfigurationReadException::new,
-                "Не удалось загрузить предмет так как параметр `minAmount` отсутствует");
-        int maxAmount = Validate.invokeAndHandleException(() -> compoundTag.getAsInt("maxAmount"),
-                NullPointerException.class,
-                ConfigurationReadException::new,
-                "Не удалось загрузить предмет так как параметр `maxAmount` отсутствует");
-        boolean randomAmount = Validate.invokeAndHandleException(() -> compoundTag.getAsBoolean("randomAmount"),
-                NullPointerException.class,
-                ConfigurationReadException::new,
-                "Не удалось загрузить предмет так как параметр `randomAmount` отсутствует");
-        ItemStack itemStack = BLib.getApi().getParseCompoundTag().create(
-                (CompoundTag) Validate.invokeAndHandleException(() -> compoundTag.getOrThrow("item"),
-                        NullPointerException.class,
-                        ConfigurationReadException::new,
-                        "Не удалось загрузить предмет так как параметр `item` отсутствует")
-        );
+        int chance = compoundTag.getAsInt("chance");
+        int minAmount = compoundTag.getAsInt("minAmount");
+        int maxAmount = compoundTag.getAsInt("maxAmount");
+        boolean randomAmount = compoundTag.getAsBoolean("randomAmount");
+
+        String base64 = compoundTag.getAsString("item");
+        ItemStack itemStack = ItemSerializer.deserialize(base64);
+
         return new InventoryItem(itemStack, chance, randomAmount, minAmount, maxAmount);
     }
 
     public void save(CompoundTag compoundTag) {
-        compoundTag.putTag("item", BLib.getApi().getParseCompoundTag().copy(itemStack));
+        compoundTag.putString("item", ItemSerializer.serialize(itemStack));
         compoundTag.putInt("chance", chance);
         compoundTag.putInt("minAmount", minAmount);
         compoundTag.putInt("maxAmount", maxAmount);
