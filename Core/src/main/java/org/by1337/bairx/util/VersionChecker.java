@@ -55,7 +55,7 @@ public class VersionChecker implements Listener {
     private String parsePage() {
         HttpURLConnection connection = null;
         try {
-            URL url = new URL("https://raw.githubusercontent.com/By1337/BAirDropX/master/version");
+            URL url = new URL("https://raw.githubusercontent.com/seetch/BAirDropX/master/version");
             connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(15000);
