@@ -37,8 +37,7 @@ import org.by1337.bairx.hologram.HologramLoader;
 import org.by1337.bairx.hologram.HologramManager;
 import org.by1337.bairx.hook.metric.Metrics;
 import org.by1337.bairx.hook.papi.PapiHook;
-import org.by1337.bairx.inventory.MenuAddItem;
-import org.by1337.bairx.inventory.MenuEditChance;
+import org.by1337.bairx.inventory.MenuItemManager;
 import org.by1337.bairx.listener.ClickListener;
 import org.by1337.bairx.location.generator.GeneratorSetting;
 import org.by1337.bairx.menu.ListenersMenu;
@@ -263,23 +262,13 @@ public final class BAirDropX extends JavaPlugin {
         command.addSubCommand(
                 new Command<CommandSender>("edit")
                         .requires(new RequiresPermission<>("bair.edit"))
-                        .addSubCommand(new Command<CommandSender>("loot")
+                        .addSubCommand(new Command<CommandSender>("items")
                                 .requires((sender -> sender instanceof Player))
                                 .argument(new ArgumentSetList<>("air", () -> airDropMap.values().stream().map(air -> air.getId().getName()).toList()))
                                 .executor(((sender, args) -> {
                                     Player player = (Player) sender;
-                                    AirDrop airDrop = airDropMap.get(new NameKey((String) args.getOrThrow("air", "&c/bairx edit loot <id>")));
-                                    MenuAddItem menuAddItem = new MenuAddItem(airDrop.getInventoryManager(), airDrop, player);
-                                    player.openInventory(menuAddItem.getInventory());
-                                }))
-                        )
-                        .addSubCommand(new Command<CommandSender>("chance")
-                                .requires((sender -> sender instanceof Player))
-                                .argument(new ArgumentSetList<>("air", () -> airDropMap.values().stream().map(air -> air.getId().getName()).toList()))
-                                .executor(((sender, args) -> {
-                                    Player player = (Player) sender;
-                                    AirDrop airDrop = airDropMap.get(new NameKey((String) args.getOrThrow("air", "&c/bairx edit chance <id>")));
-                                    MenuEditChance menuAddItem = new MenuEditChance(airDrop.getInventoryManager(), airDrop, player);
+                                    AirDrop airDrop = airDropMap.get(new NameKey((String) args.getOrThrow("air", "&c/bairx edit items <id>")));
+                                    MenuItemManager menuAddItem = new MenuItemManager(airDrop.getInventoryManager(), airDrop, player);
                                     player.openInventory(menuAddItem.getInventory());
                                 }))
                         )
