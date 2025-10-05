@@ -1,29 +1,17 @@
 package org.by1337.bairx;
 
-//import net.kyori.adventure.text.minimessage.MiniMessage;
-
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-//import net.kyori.adventure.text.BlockNBTComponent;
-//import net.kyori.adventure.text.Component;
-//import net.kyori.adventure.text.event.ClickEvent;
-//import net.kyori.adventure.text.event.HoverEvent;
-//import net.kyori.adventure.text.format.Style;
-//import net.kyori.adventure.text.format.TextColor;
-//import net.kyori.adventure.text.format.TextDecoration;
-//import net.kyori.adventure.text.minimessage.MiniMessage;
-//import net.kyori.adventure.text.serializer.ComponentSerializer;
-//import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-//import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
-//import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.text.Component;
-//import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.by1337.bairx.addon.*;
 import org.by1337.bairx.airdrop.AirDrop;
+import org.by1337.bairx.airdrop.ClassicAirDrop;
 import org.by1337.bairx.airdrop.loader.AirdropLoader;
 import org.by1337.bairx.airdrop.loader.AirdropRegistry;
 import org.by1337.bairx.command.bair.EffectCommand;
@@ -197,6 +185,11 @@ public final class BAirDropX extends JavaPlugin {
         if (currentTick % 20 == 0) {
             for (AirDrop airDrop : airDropMap.values().toArray(new AirDrop[0])) {
                 try {
+                    if (airDrop instanceof ClassicAirDrop) {
+                        if (((ClassicAirDrop) airDrop).isSummoned()) {
+                            airDrop.tick();
+                        }
+                    }
                     if (airDrop.isUseDefaultTimer()) {
                         airDrop.tick();
                     }
