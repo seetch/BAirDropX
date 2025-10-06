@@ -52,6 +52,13 @@ public interface AirDrop extends Placeholderable {
     boolean isStarted();
 
     /**
+     * Should return the Name of the airdrop.
+     *
+     * @return the Name of the airdrop.
+     */
+    String getAirName();
+
+    /**
      * Should return the ID of the airdrop.
      *
      * @return the ID of the airdrop.

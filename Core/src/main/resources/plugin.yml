@@ -15,6 +15,11 @@ commands:
       - bair
       - airdrop
     permission: bair
+  event:
+    description: Manage events
+    permission: event.use
 permissions:
   bair.*:
     default: op
+  event.use:
+    default: true

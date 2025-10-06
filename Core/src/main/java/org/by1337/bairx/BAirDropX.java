@@ -14,6 +14,7 @@ import org.by1337.bairx.airdrop.AirDrop;
 import org.by1337.bairx.airdrop.ClassicAirDrop;
 import org.by1337.bairx.airdrop.loader.AirdropLoader;
 import org.by1337.bairx.airdrop.loader.AirdropRegistry;
+import org.by1337.bairx.command.EventCommand;
 import org.by1337.bairx.command.bair.EffectCommand;
 import org.by1337.bairx.command.bair.ExecuteCommand;
 import org.by1337.bairx.config.adapter.AdapterGeneratorSetting;
@@ -112,7 +113,8 @@ public final class BAirDropX extends JavaPlugin {
                 .enable("cfg save", () -> {
                     ConfigUtil.trySave("listeners/default.yml");
                     ConfigUtil.trySave("config.yml");
-                }).enable("create timer manager", () -> {
+                })
+                .enable("create timer manager", () -> {
                     timerManager = new TimerManager();
                 }).enable("load observers", () -> {
                     observerManager = new ObserverManager();
@@ -149,6 +151,8 @@ public final class BAirDropX extends JavaPlugin {
                 .enable("Metrics & version checker", () -> {
                     new Metrics(this, 21314);
                     new VersionChecker();
+                }).enable("register event command", () -> {
+                    Objects.requireNonNull(getCommand("event")).setExecutor(new EventCommand());
                 })
                 .disable("unregister", () -> {
                     Bukkit.getScheduler().cancelTasks(this);

@@ -581,6 +581,11 @@ public class ClassicAirDrop extends Placeholder implements AirDrop, Summonable {
     }
 
     @Override
+    public String getAirName() {
+        return airName;
+    }
+
+    @Override
     public int hashCode() {
         return id.hashCode();
     }

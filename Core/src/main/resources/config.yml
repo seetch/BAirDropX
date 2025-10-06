@@ -63,3 +63,39 @@ summoners:
       - spawn
     airDrops: # Список аирдропов, которые можно призвать этим предметом
       - 'example:100' # Аирдроп "example" с шансом 100%
+
+# Настройка команды /event.
+event:
+  command:
+    messages:
+      help:
+        - "&6Помощь по событиям:"
+        - "&e/event delay &7- &fвремя до начала события"
+        - "&e/event gps &7- &fкоординаты события"
+        - "&e/event help &7- &fсписок всех событий"
+      delay:
+        - "&eБлижайший аирдроп &f%name% &eчерез &f%time%"
+      delay_active:
+        - "&cАктивный аирдроп: &f%name% &e(уже начался!)"
+        - "&7Используйте &e/event gps &7для получения координат"
+      delay_no_airdrops: "&cВ настоящее время нет запланированных аирдропов."
+      gps:
+        - "&eКоординаты аирдропа &a%name%:"
+        - "&fX: &a%x%"
+        - "&fY: &a%y%"
+        - "&fZ: &a%z%"
+        - "&fМир: &a%world%"
+        - "&fРасстояние: &a%distance% блоков"
+      gps_player_only: "&cЭта команда только для игроков."
+      gps_no_active: "&cВ настоящее время нет активных аирдропов с координатами."
+      gps_not_started: "&cАирдроп еще не начался, координаты недоступны."
+    settings:
+      time_format:
+        hours: "%d ч. %d мин. %d сек."
+        minutes: "%d мин. %d сек."
+        seconds: "%d сек."
+      world_names:
+        world: "&aОбычный мир"
+        world_nether: "&cНезер"
+        world_the_end: "&5Энд"
+      default_world_name: "&f%world%"
