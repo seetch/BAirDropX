@@ -2,6 +2,7 @@ package org.by1337.bairx.timer;
 
 import org.by1337.bairx.BAirDropX;
 import org.by1337.bairx.airdrop.AirDrop;
+import org.by1337.bairx.airdrop.ClassicAirDrop;
 import org.by1337.bairx.random.WeightedAirDrop;
 import org.by1337.bairx.random.WeightedRandomItemSelector;
 import org.by1337.bairx.timer.strategy.TimerRegistry;
@@ -134,13 +135,29 @@ public class RandomWaiter implements Timer {
     }
 
     private void startRandomAirdrop() {
+        Iterator<Map.Entry<NameKey, AirDrop>> iterator = activeAirdrops.entrySet().iterator();
+        while (iterator.hasNext()) {
+            AirDrop airDrop = iterator.next().getValue();
+
+            if (airDrop instanceof ClassicAirDrop classicAirDrop) {
+                if (!classicAirDrop.isSummoned()) {
+                    BAirDropX.debug("Таймер %s: Принудительно останавливаем активный аирдроп '%s' для запуска нового.", name, airDrop.getId());
+                    airDrop.forceStop();
+                    iterator.remove();
+                }
+            }
+        }
+
         WeightedAirDrop selected = randomSelector.getRandomItem();
         if (selected != null) {
             AirDrop airDrop = BAirDropX.getAirdropById(selected.getId());
             if (airDrop != null && !airDrop.isStarted()) {
                 activeAirdrops.put(selected.getId(), airDrop);
+                BAirDropX.debug("Таймер %s: Запускаем отсчет аирдропа '%s'.", name, airDrop.getId());
             } else if (airDrop == null) {
-                BAirDropX.getMessage().warning(BAirDropX.translate("timer.ticker.unknown.airdrop"), name, selected.getId());
+                BAirDropX.debug(BAirDropX.translate("timer.ticker.unknown.airdrop"), name, selected.getId());
+            } else if (airDrop.isStarted()) {
+                BAirDropX.debug("Таймер %s: Пропускаем запуск аирдропа '%s', так как он уже активен.", name, airDrop.getId());
             }
         }
     }
