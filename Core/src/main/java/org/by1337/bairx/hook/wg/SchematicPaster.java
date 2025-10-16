@@ -39,9 +39,11 @@ public class SchematicPaster {
         try {
             ClipboardFormat format = ClipboardFormats.findByFile(schematicFile);
             Validate.notNull(format, "WE/FAWE не может прочитать схематику такого формата!");
-            ClipboardReader reader = format.getReader(new FileInputStream(schematicFile));
 
-            Clipboard clipboard = reader.read();
+            Clipboard clipboard;
+            try (ClipboardReader reader = format.getReader(new FileInputStream(schematicFile))) {
+                clipboard = reader.read();
+            }
 
             Location location = paster.getLocation();
             Validate.notNull(location.getWorld());
@@ -54,11 +56,11 @@ public class SchematicPaster {
                                     location.getBlockY() + cfg.getOffsets().getY(),
                                     location.getBlockZ() + cfg.getOffsets().getZ()
                             )
-                    ).
-                    ignoreAirBlocks(cfg.isIgnoreAirBlocks()).build();
+                    )
+                    .ignoreAirBlocks(cfg.isIgnoreAirBlocks())
+                    .build();
 
             Operations.complete(operation);
-            editSession.close();
 
             editSessions.put(paster.getId(), editSession);
 
@@ -71,9 +73,13 @@ public class SchematicPaster {
     public static void undo(AirDrop paster) {
         var session = editSessions.remove(paster.getId());
         if (session != null) {
-            EditSession newEditSession = WorldEdit.getInstance().newEditSession(session.getWorld());
-            session.undo(newEditSession);
-            session.close();
+            try {
+                EditSession newSession = WorldEdit.getInstance().newEditSession(session.getWorld());
+                session.undo(newSession);
+                newSession.close();
+            } finally {
+                session.close();
+            }
         }
     }
 }
