@@ -4,7 +4,9 @@ import org.bukkit.inventory.ItemStack;
 import org.by1337.bairx.random.WeightedItem;
 import org.by1337.bairx.util.Placeholder;
 import org.by1337.blib.BLib;
+import org.by1337.blib.nbt.NBT;
 import org.by1337.blib.nbt.impl.CompoundTag;
+import org.by1337.blib.nbt.impl.StringNBT;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
@@ -34,9 +36,13 @@ public class InventoryItem extends Placeholder implements WeightedItem {
         int maxAmount = compoundTag.getAsInt("maxAmount");
         boolean randomAmount = compoundTag.getAsBoolean("randomAmount");
 
-        String item = compoundTag.getAsString("item");
-        ItemStack itemStack = BLib.getApi().getItemStackSerialize().deserialize(item);
-
+        ItemStack itemStack;
+        NBT item = compoundTag.get("item");
+        if (item instanceof CompoundTag tag) {
+            itemStack = BLib.getApi().getParseCompoundTag().create(tag);
+        } else {
+            itemStack = BLib.getApi().getItemStackSerialize().deserialize(((StringNBT) item).getValue());
+        }
         return new InventoryItem(itemStack, chance, randomAmount, minAmount, maxAmount);
     }
 
